@@ -13,7 +13,9 @@ export default function App() {
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
-    loadApiKey().then(() => setAppReady(true));
+    loadApiKey()
+      .then(() => setAppReady(true))
+      .catch(() => setAppReady(true));
   }, []);
 
   // Loading

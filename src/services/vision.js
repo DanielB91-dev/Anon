@@ -7,7 +7,11 @@ let apiKey = null;
 
 export async function setApiKey(key) {
   apiKey = key;
-  await AsyncStorage.setItem(STORAGE_KEY, key);
+  try {
+    await AsyncStorage.setItem(STORAGE_KEY, key);
+  } catch (e) {
+    console.log('[ANON] Failed to save API key:', e.message);
+  }
 }
 
 export function getApiKey() {
@@ -15,9 +19,13 @@ export function getApiKey() {
 }
 
 export async function loadApiKey() {
-  const stored = await AsyncStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    apiKey = stored;
+  try {
+    const stored = await AsyncStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      apiKey = stored;
+    }
+  } catch (e) {
+    console.log('[ANON] Failed to load API key:', e.message);
   }
   return apiKey;
 }
