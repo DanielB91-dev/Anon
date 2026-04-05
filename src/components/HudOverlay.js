@@ -2,16 +2,24 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { COLORS } from '../constants/theme';
 
-export default function HudOverlay({ description, isAnalyzing, timestamp }) {
+export default function HudOverlay({
+  description,
+  isAnalyzing,
+  timestamp,
+  autoScan,
+  scanInterval,
+  scanCount,
+}) {
   const pulseAnim = useRef(new Animated.Value(0.4)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(20)).current;
 
   useEffect(() => {
     if (isAnalyzing) {
       Animated.loop(
         Animated.sequence([
-          Animated.timing(pulseAnim, { toValue: 1, duration: 800, useNativeDriver: true }),
-          Animated.timing(pulseAnim, { toValue: 0.4, duration: 800, useNativeDriver: true }),
+          Animated.timing(pulseAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
+          Animated.timing(pulseAnim, { toValue: 0.4, duration: 600, useNativeDriver: true }),
         ])
       ).start();
     } else {
@@ -21,11 +29,20 @@ export default function HudOverlay({ description, isAnalyzing, timestamp }) {
 
   useEffect(() => {
     if (description) {
-      Animated.timing(fadeAnim, { toValue: 1, duration: 400, useNativeDriver: true }).start();
-    } else {
+      slideAnim.setValue(20);
       fadeAnim.setValue(0);
+      Animated.parallel([
+        Animated.timing(fadeAnim, { toValue: 1, duration: 300, useNativeDriver: true }),
+        Animated.timing(slideAnim, { toValue: 0, duration: 300, useNativeDriver: true }),
+      ]).start();
     }
-  }, [description]);
+  }, [description, scanCount]);
+
+  const statusLabel = autoScan
+    ? `SCANNING [${scanInterval}]`
+    : isAnalyzing
+    ? 'ANALYZING'
+    : 'READY';
 
   return (
     <View style={styles.container} pointerEvents="none">
@@ -35,12 +52,22 @@ export default function HudOverlay({ description, isAnalyzing, timestamp }) {
           <Text style={styles.hudLabel}>ANON v1.0</Text>
         </View>
         <Animated.View style={[styles.statusIndicator, { opacity: pulseAnim }]}>
-          <View style={[styles.dot, isAnalyzing ? styles.dotActive : styles.dotIdle]} />
-          <Text style={styles.statusText}>
-            {isAnalyzing ? 'ANALYZING' : 'READY'}
+          <View style={[
+            styles.dot,
+            autoScan ? styles.dotScanning : isAnalyzing ? styles.dotActive : styles.dotIdle,
+          ]} />
+          <Text style={[styles.statusText, autoScan && styles.statusTextScanning]}>
+            {statusLabel}
           </Text>
         </Animated.View>
       </View>
+
+      {/* Scan counter in auto mode */}
+      {autoScan && scanCount > 0 && (
+        <View style={styles.scanCounter}>
+          <Text style={styles.scanCounterText}>SCANS: {scanCount}</Text>
+        </View>
+      )}
 
       {/* Scan lines effect */}
       <View style={styles.scanLines}>
@@ -64,9 +91,14 @@ export default function HudOverlay({ description, isAnalyzing, timestamp }) {
 
       {/* Description panel */}
       {description && (
-        <Animated.View style={[styles.descriptionPanel, { opacity: fadeAnim }]}>
+        <Animated.View style={[
+          styles.descriptionPanel,
+          { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+        ]}>
           <View style={styles.descriptionHeader}>
-            <Text style={styles.descriptionLabel}>ANALYSIS</Text>
+            <Text style={styles.descriptionLabel}>
+              {autoScan ? 'LIVE ANALYSIS' : 'ANALYSIS'}
+            </Text>
             {timestamp && (
               <Text style={styles.timestamp}>{timestamp}</Text>
             )}
@@ -122,10 +154,27 @@ const styles = StyleSheet.create({
   dotIdle: {
     backgroundColor: COLORS.textSecondary,
   },
+  dotScanning: {
+    backgroundColor: '#00ff64',
+  },
   statusText: {
     color: COLORS.primary,
     fontSize: 11,
     fontWeight: '600',
+    fontFamily: 'monospace',
+    letterSpacing: 1,
+  },
+  statusTextScanning: {
+    color: '#00ff64',
+  },
+  scanCounter: {
+    position: 'absolute',
+    top: 95,
+    right: 20,
+  },
+  scanCounterText: {
+    color: COLORS.textSecondary,
+    fontSize: 10,
     fontFamily: 'monospace',
     letterSpacing: 1,
   },
@@ -205,7 +254,7 @@ const styles = StyleSheet.create({
   },
   descriptionPanel: {
     position: 'absolute',
-    bottom: 100,
+    bottom: 140,
     left: 20,
     right: 20,
     backgroundColor: 'rgba(10, 10, 10, 0.85)',
