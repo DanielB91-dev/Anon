@@ -26,7 +26,9 @@ export default function CameraScreen({ onOpenSettings }) {
   const [cameraReady, setCameraReady] = useState(false);
 
   const captureAndAnalyze = useCallback(async () => {
-    if (isAnalyzingRef.current || !cameraRef.current || !cameraReady) return;
+    console.log('[ANON] Capture tapped', { analyzing: isAnalyzingRef.current, cameraRef: !!cameraRef.current, apiKey: !!getApiKey() });
+
+    if (isAnalyzingRef.current || !cameraRef.current) return;
     if (!getApiKey()) {
       setAutoScan(false);
       Alert.alert('API Key Required', 'Please set your Anthropic API key in Settings.', [
@@ -38,24 +40,33 @@ export default function CameraScreen({ onOpenSettings }) {
 
     isAnalyzingRef.current = true;
     setIsAnalyzing(true);
+    setDescription('Capturing...');
     try {
+      console.log('[ANON] Taking picture...');
       const photo = await cameraRef.current.takePictureAsync({ quality: 0.4 });
+      console.log('[ANON] Photo taken:', photo.uri);
+
+      setDescription('Processing image...');
       const manipulated = await ImageManipulator.manipulateAsync(
         photo.uri,
         [{ resize: { width: 720 } }],
         { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG, base64: true }
       );
+      console.log('[ANON] Image processed, sending to API...');
 
+      setDescription('Analyzing with Claude...');
       const result = await analyzeImage(manipulated.base64);
+      console.log('[ANON] Got result:', result.substring(0, 50));
       const now = new Date();
       setDescription(result);
       setTimestamp(now.toLocaleTimeString());
       setScanCount((prev) => prev + 1);
     } catch (error) {
+      console.log('[ANON] Error:', error.message);
       if (error.message.includes('API key')) {
         setAutoScan(false);
       }
-      Alert.alert('Analysis Failed', error.message);
+      setDescription('Error: ' + error.message);
     } finally {
       isAnalyzingRef.current = false;
       setIsAnalyzing(false);
