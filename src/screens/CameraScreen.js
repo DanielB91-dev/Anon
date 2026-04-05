@@ -84,8 +84,6 @@ export default function CameraScreen({ onOpenSettings }) {
         ref={cameraRef}
         style={StyleSheet.absoluteFill}
         facing={facing}
-        active={true}
-        onCameraReady={() => setCameraReady(true)}
       />
 
       <HudOverlay
