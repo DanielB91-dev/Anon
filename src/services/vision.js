@@ -1,13 +1,24 @@
-const API_URL = 'https://api.anthropic.com/v1/messages';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Store the API key in memory (set via Settings screen)
+const API_URL = 'https://api.anthropic.com/v1/messages';
+const STORAGE_KEY = 'anon_api_key';
+
 let apiKey = null;
 
-export function setApiKey(key) {
+export async function setApiKey(key) {
   apiKey = key;
+  await AsyncStorage.setItem(STORAGE_KEY, key);
 }
 
 export function getApiKey() {
+  return apiKey;
+}
+
+export async function loadApiKey() {
+  const stored = await AsyncStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    apiKey = stored;
+  }
   return apiKey;
 }
 

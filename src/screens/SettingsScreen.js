@@ -15,10 +15,10 @@ export default function SettingsScreen({ onClose }) {
   const [key, setKey] = useState(getApiKey() || '');
   const [saved, setSaved] = useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const trimmed = key.trim();
     if (trimmed) {
-      setApiKey(trimmed);
+      await setApiKey(trimmed);
       setSaved(true);
       setTimeout(() => onClose(), 600);
     }

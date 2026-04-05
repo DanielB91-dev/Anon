@@ -5,13 +5,19 @@ import { useCameraPermissions } from 'expo-camera';
 import CameraScreen from './src/screens/CameraScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import { COLORS } from './src/constants/theme';
+import { loadApiKey } from './src/services/vision';
 
 export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const [screen, setScreen] = useState('camera'); // 'camera' | 'settings'
+  const [appReady, setAppReady] = useState(false);
 
-  // Permission not yet determined
-  if (!permission) {
+  useEffect(() => {
+    loadApiKey().then(() => setAppReady(true));
+  }, []);
+
+  // Loading
+  if (!permission || !appReady) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color={COLORS.primary} />
