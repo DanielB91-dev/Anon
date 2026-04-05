@@ -23,9 +23,10 @@ export default function CameraScreen({ onOpenSettings }) {
   const [autoScan, setAutoScan] = useState(false);
   const [intervalIndex, setIntervalIndex] = useState(0);
   const [scanCount, setScanCount] = useState(0);
+  const [cameraReady, setCameraReady] = useState(false);
 
   const captureAndAnalyze = useCallback(async () => {
-    if (isAnalyzingRef.current || !cameraRef.current) return;
+    if (isAnalyzingRef.current || !cameraRef.current || !cameraReady) return;
     if (!getApiKey()) {
       setAutoScan(false);
       Alert.alert('API Key Required', 'Please set your Anthropic API key in Settings.', [
@@ -92,7 +93,13 @@ export default function CameraScreen({ onOpenSettings }) {
 
   return (
     <View style={styles.container}>
-      <CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing={facing} />
+      <CameraView
+        ref={cameraRef}
+        style={StyleSheet.absoluteFill}
+        facing={facing}
+        active={true}
+        onCameraReady={() => setCameraReady(true)}
+      />
 
       <HudOverlay
         description={description}

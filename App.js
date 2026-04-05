@@ -46,7 +46,7 @@ export default function App() {
 
   // Main app
   return (
-    <View style={styles.container}>
+    <View style={styles.fullScreen}>
       {screen === 'camera' ? (
         <CameraScreen onOpenSettings={() => setScreen('settings')} />
       ) : (
@@ -63,6 +63,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  fullScreen: {
+    flex: 1,
+    backgroundColor: COLORS.background,
   },
   permissionBox: {
     paddingHorizontal: 32,
