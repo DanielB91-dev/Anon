@@ -92,62 +92,62 @@ export default function CameraScreen({ onOpenSettings }) {
 
   return (
     <View style={styles.container}>
-      <CameraView ref={cameraRef} style={styles.camera} facing={facing}>
-        <HudOverlay
-          description={description}
-          isAnalyzing={isAnalyzing}
-          timestamp={timestamp}
-          autoScan={autoScan}
-          scanInterval={SCAN_INTERVALS[intervalIndex].label}
-          scanCount={scanCount}
-        />
+      <CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing={facing} />
 
-        {/* Bottom controls */}
-        <View style={styles.controls}>
-          <TouchableOpacity style={styles.secondaryButton} onPress={onOpenSettings}>
-            <Text style={styles.secondaryButtonText}>⚙</Text>
-          </TouchableOpacity>
+      <HudOverlay
+        description={description}
+        isAnalyzing={isAnalyzing}
+        timestamp={timestamp}
+        autoScan={autoScan}
+        scanInterval={SCAN_INTERVALS[intervalIndex].label}
+        scanCount={scanCount}
+      />
 
-          {/* Main capture / auto-scan button */}
-          <TouchableOpacity
-            style={[styles.captureButton, autoScan && styles.captureButtonAutoScan]}
-            onPress={autoScan ? toggleAutoScan : captureAndAnalyze}
-            onLongPress={toggleAutoScan}
-            disabled={isAnalyzing && !autoScan}
-            activeOpacity={0.7}
-          >
-            <View style={styles.captureButtonInner}>
-              {autoScan ? (
-                <View style={styles.stopIcon} />
-              ) : (
-                <View style={[styles.captureButtonCenter, isAnalyzing && styles.captureButtonCenterActive]} />
-              )}
-            </View>
-          </TouchableOpacity>
+      {/* Bottom controls */}
+      <View style={styles.controls}>
+        <TouchableOpacity style={styles.secondaryButton} onPress={onOpenSettings}>
+          <Text style={styles.secondaryButtonText}>⚙</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.secondaryButton} onPress={toggleFacing}>
-            <Text style={styles.secondaryButtonText}>⟲</Text>
-          </TouchableOpacity>
-        </View>
+        {/* Main capture / auto-scan button */}
+        <TouchableOpacity
+          style={[styles.captureButton, autoScan && styles.captureButtonAutoScan]}
+          onPress={autoScan ? toggleAutoScan : captureAndAnalyze}
+          onLongPress={toggleAutoScan}
+          disabled={isAnalyzing && !autoScan}
+          activeOpacity={0.7}
+        >
+          <View style={styles.captureButtonInner}>
+            {autoScan ? (
+              <View style={styles.stopIcon} />
+            ) : (
+              <View style={[styles.captureButtonCenter, isAnalyzing && styles.captureButtonCenterActive]} />
+            )}
+          </View>
+        </TouchableOpacity>
 
-        {/* Scan interval selector */}
-        <View style={styles.modeBar}>
-          <TouchableOpacity
-            style={[styles.modeButton, autoScan && styles.modeButtonActive]}
-            onPress={toggleAutoScan}
-          >
-            <Text style={[styles.modeButtonText, autoScan && styles.modeButtonTextActive]}>
-              {autoScan ? '■ STOP' : '▶ AUTO SCAN'}
-            </Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.secondaryButton} onPress={toggleFacing}>
+          <Text style={styles.secondaryButtonText}>⟲</Text>
+        </TouchableOpacity>
+      </View>
 
-          <TouchableOpacity style={styles.intervalButton} onPress={cycleInterval}>
-            <Text style={styles.intervalButtonText}>
-              INTERVAL: {SCAN_INTERVALS[intervalIndex].label}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
+      {/* Scan interval selector */}
+      <View style={styles.modeBar}>
+        <TouchableOpacity
+          style={[styles.modeButton, autoScan && styles.modeButtonActive]}
+          onPress={toggleAutoScan}
+        >
+          <Text style={[styles.modeButtonText, autoScan && styles.modeButtonTextActive]}>
+            {autoScan ? '■ STOP' : '▶ AUTO SCAN'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.intervalButton} onPress={cycleInterval}>
+          <Text style={styles.intervalButtonText}>
+            INTERVAL: {SCAN_INTERVALS[intervalIndex].label}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
