@@ -6,28 +6,17 @@ import HudOverlay from '../components/HudOverlay';
 import { analyzeImage, getApiKey } from '../services/vision';
 import { COLORS } from '../constants/theme';
 
-const SCAN_INTERVALS = [
-  { label: '2S', ms: 2000 },
-  { label: '4S', ms: 4000 },
-  { label: '8S', ms: 8000 },
-];
-
 export default function CameraScreen({ onOpenSettings }) {
   const cameraRef = useRef(null);
-  const scanTimerRef = useRef(null);
   const isAnalyzingRef = useRef(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [description, setDescription] = useState(null);
   const [timestamp, setTimestamp] = useState(null);
   const [facing, setFacing] = useState('back');
   const [autoScan, setAutoScan] = useState(false);
-  const [intervalIndex, setIntervalIndex] = useState(0);
   const [scanCount, setScanCount] = useState(0);
-  const [cameraReady, setCameraReady] = useState(false);
 
   const captureAndAnalyze = useCallback(async () => {
-    console.log('[ANON] Capture tapped', { analyzing: isAnalyzingRef.current, cameraRef: !!cameraRef.current, apiKey: !!getApiKey() });
-
     if (isAnalyzingRef.current || !cameraRef.current) return;
     if (!getApiKey()) {
       setAutoScan(false);
@@ -40,29 +29,20 @@ export default function CameraScreen({ onOpenSettings }) {
 
     isAnalyzingRef.current = true;
     setIsAnalyzing(true);
-    setDescription('Capturing...');
     try {
-      console.log('[ANON] Taking picture...');
       const photo = await cameraRef.current.takePictureAsync({ quality: 0.4 });
-      console.log('[ANON] Photo taken:', photo.uri);
-
-      setDescription('Processing image...');
       const manipulated = await ImageManipulator.manipulateAsync(
         photo.uri,
         [{ resize: { width: 720 } }],
         { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG, base64: true }
       );
-      console.log('[ANON] Image processed, sending to API...');
 
-      setDescription('Analyzing with Claude...');
       const result = await analyzeImage(manipulated.base64);
-      console.log('[ANON] Got result:', result.substring(0, 50));
       const now = new Date();
       setDescription(result);
       setTimestamp(now.toLocaleTimeString());
       setScanCount((prev) => prev + 1);
     } catch (error) {
-      console.log('[ANON] Error:', error.message);
       if (error.message.includes('API key')) {
         setAutoScan(false);
       }
@@ -73,29 +53,25 @@ export default function CameraScreen({ onOpenSettings }) {
     }
   }, [onOpenSettings]);
 
-  // Auto-scan loop
+  // Auto-scan: chain scans back-to-back instead of fixed interval
   useEffect(() => {
-    if (autoScan) {
-      // Fire immediately on enable
-      captureAndAnalyze();
-      scanTimerRef.current = setInterval(() => {
-        captureAndAnalyze();
-      }, SCAN_INTERVALS[intervalIndex].ms);
-    }
-    return () => {
-      if (scanTimerRef.current) {
-        clearInterval(scanTimerRef.current);
-        scanTimerRef.current = null;
+    if (!autoScan) return;
+    let cancelled = false;
+
+    const runLoop = async () => {
+      while (!cancelled) {
+        await captureAndAnalyze();
+        // Small pause between scans to let the camera settle
+        await new Promise((resolve) => setTimeout(resolve, 500));
       }
     };
-  }, [autoScan, intervalIndex, captureAndAnalyze]);
+    runLoop();
+
+    return () => { cancelled = true; };
+  }, [autoScan, captureAndAnalyze]);
 
   const toggleAutoScan = useCallback(() => {
     setAutoScan((prev) => !prev);
-  }, []);
-
-  const cycleInterval = useCallback(() => {
-    setIntervalIndex((prev) => (prev + 1) % SCAN_INTERVALS.length);
   }, []);
 
   const toggleFacing = useCallback(() => {
@@ -117,7 +93,6 @@ export default function CameraScreen({ onOpenSettings }) {
         isAnalyzing={isAnalyzing}
         timestamp={timestamp}
         autoScan={autoScan}
-        scanInterval={SCAN_INTERVALS[intervalIndex].label}
         scanCount={scanCount}
       />
 
@@ -149,20 +124,14 @@ export default function CameraScreen({ onOpenSettings }) {
         </TouchableOpacity>
       </View>
 
-      {/* Scan interval selector */}
+      {/* Auto scan toggle */}
       <View style={styles.modeBar}>
         <TouchableOpacity
           style={[styles.modeButton, autoScan && styles.modeButtonActive]}
           onPress={toggleAutoScan}
         >
           <Text style={[styles.modeButtonText, autoScan && styles.modeButtonTextActive]}>
-            {autoScan ? '■ STOP' : '▶ AUTO SCAN'}
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.intervalButton} onPress={cycleInterval}>
-          <Text style={styles.intervalButtonText}>
-            INTERVAL: {SCAN_INTERVALS[intervalIndex].label}
+            {autoScan ? '■ STOP' : '▶ CONTINUOUS'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -269,20 +238,5 @@ const styles = StyleSheet.create({
   },
   modeButtonTextActive: {
     color: COLORS.danger,
-  },
-  intervalButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  intervalButtonText: {
-    color: COLORS.textSecondary,
-    fontSize: 11,
-    fontWeight: '600',
-    fontFamily: 'monospace',
-    letterSpacing: 1,
   },
 });
