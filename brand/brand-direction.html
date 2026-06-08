@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brand Direction — Applied AI Firm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#ECE7DE;        /* warm off-white */
+    --paper-2:#E2DCD1;
+    --ink:#141210;          /* warm near-black */
+    --ink-soft:#2A2622;
+    --grey:#8B8378;         /* warm mid grey */
+    --grey-2:#B6AFA3;
+    --line:#CBC3B6;
+    --signal:#C7552F;       /* clay / ember accent */
+    --signal-2:#E0763E;
+    --maxw:1160px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Schibsted Grotesk",system-ui,sans-serif;
+    font-weight:400;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+    overflow-x:hidden;
+  }
+  /* film grain overlay */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    pointer-events:none;
+    opacity:.16;
+    mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+  .mono{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+  .serif{font-family:"Instrument Serif",serif;font-weight:400}
+  .accent{color:var(--signal)}
+
+  /* ---- top bar ---- */
+  .topbar{border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px}
+  .topbar .mono{color:var(--grey)}
+
+  /* ---- hero ---- */
+  .hero{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+  .hero .wrap{padding-top:120px;padding-bottom:120px;position:relative;z-index:2}
+  .hero .kicker{color:var(--grey-2);margin-bottom:34px}
+  .hero h1{
+    font-family:"Instrument Serif",serif;
+    font-weight:400;
+    font-size:clamp(48px,8vw,112px);
+    line-height:.98;
+    letter-spacing:-.01em;
+  }
+  .hero h1 em{font-style:italic;color:var(--signal-2)}
+  .hero .sub{
+    max-width:560px;margin-top:36px;font-size:18px;line-height:1.55;color:var(--grey-2);
+  }
+  .hero .glow{
+    position:absolute;right:-10%;top:-20%;width:60%;height:140%;
+    background:radial-gradient(closest-side,rgba(224,118,62,.20),transparent 70%);
+    z-index:1;filter:blur(20px);
+  }
+
+  /* ---- section scaffold ---- */
+  section{padding:96px 0}
+  .eyebrow{color:var(--grey);margin-bottom:22px;display:flex;gap:12px;align-items:center}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--signal)}
+  .lead{font-family:"Instrument Serif",serif;font-size:clamp(28px,4vw,44px);line-height:1.12;letter-spacing:-.01em;max-width:880px}
+  .lead .accent{font-style:italic}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px}
+  .muted{color:var(--ink-soft);font-size:16px;line-height:1.65}
+  .muted + .muted{margin-top:16px}
+
+  .divider{height:1px;background:var(--line)}
+
+  /* ---- name finalists ---- */
+  .names{background:var(--paper-2)}
+  .namegrid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:52px}
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:4px;
+    padding:40px;display:flex;flex-direction:column;min-height:520px;position:relative;
+  }
+  .card .tag{position:absolute;top:24px;right:24px}
+  .tag-clear{color:#3F7A4E}
+  .wordmark{font-family:"Schibsted Grotesk",sans-serif;font-weight:600;letter-spacing:-.03em;font-size:54px;line-height:1;margin:8px 0 4px}
+  .wordmark .dot{color:var(--signal)}
+  .ipa{color:var(--grey);font-size:14px;margin-bottom:28px}
+  .mark{margin:6px 0 30px}
+  .etymon{font-family:"Instrument Serif",serif;font-size:22px;line-height:1.3;margin-bottom:18px}
+  .why{color:var(--ink-soft);font-size:15px;line-height:1.6;margin-bottom:10px}
+  .why b{font-weight:600}
+  .cardfoot{margin-top:auto;padding-top:26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end}
+  .lockup{display:flex;align-items:center;gap:12px}
+  .lockup .lm{width:30px;height:30px}
+  .lockup .lt{font-weight:600;letter-spacing:-.02em;font-size:18px}
+  .lockup .lt .dot{color:var(--signal)}
+
+  /* business card mock */
+  .bizcard{
+    width:190px;aspect-ratio:1.75;border-radius:6px;background:var(--ink);color:var(--paper);
+    padding:16px;display:flex;flex-direction:column;justify-content:space-between;
+    box-shadow:0 18px 40px -22px rgba(20,18,16,.7);
+  }
+  .bizcard .bn{font-weight:600;letter-spacing:-.02em;font-size:17px}
+  .bizcard .bn .dot{color:var(--signal-2)}
+  .bizcard .bm{color:var(--grey-2);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase}
+  .bizcard .brow{display:flex;justify-content:space-between;align-items:flex-end}
+  .bizcard .brow .nm{font-size:9px;color:var(--paper)}
+  .bizcard .brow .rl{font-size:7.5px;color:var(--grey-2)}
+
+  /* ---- type specimen ---- */
+  .typerow{display:grid;grid-template-columns:160px 1fr;gap:32px;align-items:baseline;padding:30px 0;border-top:1px solid var(--line)}
+  .typerow .label{color:var(--grey)}
+  .spec-serif{font-family:"Instrument Serif",serif;font-size:52px;line-height:1.04;letter-spacing:-.01em}
+  .spec-grot{font-family:"Schibsted Grotesk",sans-serif;font-size:30px;font-weight:500;letter-spacing:-.02em}
+  .spec-grot small{display:block;font-weight:400;font-size:15px;color:var(--ink-soft);margin-top:10px;letter-spacing:0}
+  .spec-mono{font-family:"Space Mono",monospace;font-size:15px;letter-spacing:.04em}
+  .spec-mono span{color:var(--signal)}
+
+  /* ---- palette ---- */
+  .swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:48px}
+  .sw{border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+  .sw .chip{height:120px}
+  .sw .meta{padding:12px 14px;background:var(--paper)}
+  .sw .nm{font-weight:600;font-size:14px}
+  .sw .hex{font-family:"Space Mono",monospace;font-size:11px;color:var(--grey);letter-spacing:.04em;text-transform:uppercase}
+
+  /* ---- voice ---- */
+  .voice{background:var(--ink);color:var(--paper)}
+  .voice .eyebrow{color:var(--grey-2)}
+  .voicegrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:48px}
+  .vline{border:1px solid #2E2A25;border-radius:4px;padding:26px 28px}
+  .vline .q{font-family:"Instrument Serif",serif;font-size:26px;line-height:1.2}
+  .vline .n{margin-top:14px;color:var(--grey);font-size:13px;line-height:1.5}
+  .dont{margin-top:40px;color:var(--grey-2);font-size:15px}
+  .dont s{color:#6E665C}
+
+  /* ---- footer ---- */
+  footer{padding:64px 0;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+  footer .mono{color:var(--grey)}
+
+  @media(max-width:820px){
+    .twocol,.namegrid,.voicegrid{grid-template-columns:1fr}
+    .swatches{grid-template-columns:repeat(2,1fr)}
+    .typerow{grid-template-columns:1fr;gap:10px}
+    .card{min-height:auto}
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="wrap">
+      <span class="mono">Applied AI Firm — Brand Direction</span>
+      <span class="mono">v0.1 · Internal</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="glow"></div>
+    <div class="wrap">
+      <div class="mono kicker">01 — The Position</div>
+      <h1>Frontier AI,<br />measured in <em>outcomes.</em></h1>
+      <p class="sub">An applied AI firm for mid-to-large enterprise. We don't sell strategy decks or pilots that die in committee — we build AI solutions accountable to the number at the end. Capability, turned into realised return.</p>
+    </div>
+  </header>
+
+  <!-- POSITIONING -->
+  <section>
+    <div class="wrap">
+      <div class="mono eyebrow">02 — What we stand for</div>
+      <p class="lead">We sit between a frontier that changes monthly and an organisation that moves yearly — and we turn the gap into <span class="accent">operational value.</span></p>
+      <div class="twocol">
+        <div>
+          <p class="muted"><b>The operator stance.</b> Most "AI consultancies" advise and disappear. We build, ship, and put our name on the outcome. The deliverable is value realised, not a recommendation.</p>
+          <p class="muted">That's rarer — and more defensible — in mid-large enterprise, where the room is full of talk and short on shipped results.</p>
+        </div>
+        <div>
+          <p class="muted"><b>What we stand against.</b> Hype-merchants. Endless pilots. "AI strategy" theatre. One-size SaaS. Fear-driven adoption.</p>
+          <p class="muted">The brand carries this as quiet confidence — restraint, not volume. The intelligence is in what we leave out.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- NAME FINALISTS -->
+  <section class="names">
+    <div class="wrap">
+      <div class="mono eyebrow">03 — Name finalists</div>
+      <p class="lead">Two clean, ownable names — each with the meaning built into the etymology. Both survived live domain &amp; trademark vetting.</p>
+
+      <div class="namegrid">
+
+        <!-- OUTTURN -->
+        <div class="card">
+          <span class="mono tag tag-clear">● Vetted clear</span>
+          <div class="wordmark">Outturn<span class="dot">.</span></div>
+          <div class="ipa">/ˈaʊt.tɜːn/ · noun</div>
+          <svg class="mark" width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="26" stroke="#141210" stroke-width="2"/>
+            <path d="M28 28 L28 6" stroke="#141210" stroke-width="2"/>
+            <path d="M28 28 L47 39" stroke="#C7552F" stroke-width="2.4"/>
+            <path d="M40 41 L47 39 L45 32" stroke="#C7552F" stroke-width="2.4" fill="none"/>
+          </svg>
+          <div class="etymon">“The quantity produced; the&nbsp;result.”</div>
+          <p class="why"><b>The anchor.</b> A real but rare word that literally means outcome / yield. Grounded, operator-grade, anti-hype — it sounds like delivery, not promises.</p>
+          <p class="why">Tone: calm, credible, built to age into a firm. The clock-hand mark reads as a measure turning <i>out</i>ward into result.</p>
+          <div class="cardfoot">
+            <div class="lockup">
+              <svg class="lm" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="26" stroke="#141210" stroke-width="3"/><path d="M28 28 L28 7" stroke="#141210" stroke-width="3"/><path d="M28 28 L47 39" stroke="#C7552F" stroke-width="3.4"/></svg>
+              <span class="lt">Outturn<span class="dot">.</span></span>
+            </div>
+            <div class="bizcard">
+              <div><div class="bn">Outturn<span class="dot">.</span></div><div class="bm" style="margin-top:4px">Applied&nbsp;AI</div></div>
+              <div class="brow"><div class="nm">D. Brady<div class="rl">Founder</div></div><div class="bm">outturn.ai</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REDIX -->
+        <div class="card">
+          <span class="mono tag tag-clear">● Vetted clear</span>
+          <div class="wordmark">Redix<span class="dot">.</span></div>
+          <div class="ipa">/ˈriː.dɪks/ · coined</div>
+          <svg class="mark" width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <path d="M10 46 L10 10 L30 10" stroke="#141210" stroke-width="2.4"/>
+            <path d="M10 28 L26 28" stroke="#141210" stroke-width="2.4"/>
+            <path d="M22 28 L44 46" stroke="#C7552F" stroke-width="2.4"/>
+            <path d="M44 10 L44 24" stroke="#C7552F" stroke-width="2.4"/>
+            <path d="M38 18 L44 24 L50 18" stroke="#C7552F" stroke-width="2.4" fill="none"/>
+          </svg>
+          <div class="etymon">From Latin <i>reditus</i> — “return.”</div>
+          <p class="why"><b>The frontier option.</b> Coined from the root of <i>return</i> (as in return-on-investment). Sharp, technical, distinctly “AI-lab.” Closest in feel to your references.</p>
+          <p class="why">Tone: modern, precise, scalable. The mark fuses an <b>R</b> with an upward return-arrow — ROI as a glyph.</p>
+          <div class="cardfoot">
+            <div class="lockup">
+              <svg class="lm" viewBox="0 0 56 56" fill="none"><path d="M12 46 L12 10 L31 10" stroke="#141210" stroke-width="3.4"/><path d="M12 28 L27 28" stroke="#141210" stroke-width="3.4"/><path d="M23 28 L44 46" stroke="#C7552F" stroke-width="3.4"/><path d="M44 12 L44 26" stroke="#C7552F" stroke-width="3.4"/></svg>
+              <span class="lt">Redix<span class="dot">.</span></span>
+            </div>
+            <div class="bizcard">
+              <div><div class="bn">Redix<span class="dot">.</span></div><div class="bm" style="margin-top:4px">Applied&nbsp;AI</div></div>
+              <div class="brow"><div class="nm">D. Brady<div class="rl">Founder</div></div><div class="bm">redix.ai</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p class="muted" style="margin-top:34px;color:var(--grey)"><span class="mono">Outside option —</span> &nbsp;<b>Avalent</b> (from Latin <i>valere</i>, “to be worth”): premium and abstract, but a small semiconductor firm holds the name — mild trademark risk.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- TYPOGRAPHY -->
+  <section>
+    <div class="wrap">
+      <div class="mono eyebrow">04 — Typography</div>
+      <p class="lead">An editorial pairing: a sharp display <span class="accent">serif</span> for moments of authority, a clean grotesque for the work, a mono for the data.</p>
+
+      <div style="margin-top:40px">
+        <div class="typerow">
+          <div class="mono label">Display / Serif</div>
+          <div>
+            <div class="spec-serif">Frontier AI, measured in outcomes.</div>
+          </div>
+        </div>
+        <div class="typerow">
+          <div class="mono label">Text / Grotesque</div>
+          <div>
+            <div class="spec-grot">We build, ship, and put our name on the result.
+            <small>Schibsted Grotesk · the workhorse for UI, body, and decks. Neutral, confident, highly legible at every size.</small></div>
+          </div>
+        </div>
+        <div class="typerow">
+          <div class="mono label">Data / Mono</div>
+          <div>
+            <div class="spec-mono">ROI_REALISED &nbsp;→ &nbsp;<span>+34%</span> &nbsp;·&nbsp; CYCLE_TIME &nbsp;→ &nbsp;<span>−61%</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:30px;color:var(--grey)">Production note: these are free Google-Fonts stand-ins. The licensed targets are <b>Söhne / Aeonik</b> (grotesque) + a cut like <b>Reckless</b> or <b>Editorial New</b> (display serif) — the actual ElevenLabs / OpenAI register.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- COLOUR -->
+  <section>
+    <div class="wrap">
+      <div class="mono eyebrow">05 — Colour</div>
+      <p class="lead">Near-monochrome and warm — <span class="accent">paper, ink, and a single ember accent.</span> No AI-blue. The grain does the humanising.</p>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#141210"></div><div class="meta"><div class="nm">Ink</div><div class="hex">#141210</div></div></div>
+        <div class="sw"><div class="chip" style="background:#ECE7DE"></div><div class="meta"><div class="nm">Paper</div><div class="hex">#ECE7DE</div></div></div>
+        <div class="sw"><div class="chip" style="background:#C7552F"></div><div class="meta"><div class="nm">Ember (signal)</div><div class="hex">#C7552F</div></div></div>
+        <div class="sw"><div class="chip" style="background:#8B8378"></div><div class="meta"><div class="nm">Stone</div><div class="hex">#8B8378</div></div></div>
+        <div class="sw"><div class="chip" style="background:#2A2622"></div><div class="meta"><div class="nm">Ink Soft</div><div class="hex">#2A2622</div></div></div>
+      </div>
+      <p class="muted" style="margin-top:30px;color:var(--grey)">The ember accent is deliberately warm and human — it differentiates from the wall of cold blue every other AI brand uses, and it sits naturally on top of film grain.</p>
+    </div>
+  </section>
+
+  <!-- VOICE -->
+  <section class="voice">
+    <div class="wrap">
+      <div class="mono eyebrow">06 — Voice &amp; lines</div>
+      <p class="lead" style="color:var(--paper)">Understated. Specific. Never salesy. The confidence is in the <span class="accent">restraint.</span></p>
+      <div class="voicegrid">
+        <div class="vline"><div class="q">“Frontier AI, measured in outcomes.”</div><div class="n">Primary line — states the position without overselling.</div></div>
+        <div class="vline"><div class="q">“From capability to return.”</div><div class="n">Short form — for footers, signatures, decks.</div></div>
+        <div class="vline"><div class="q">“We put our name on the outcome.”</div><div class="n">The operator stance — accountability as a promise.</div></div>
+        <div class="vline"><div class="q">“An applied AI firm.”</div><div class="n">The flat descriptor — sometimes the most confident move is none.</div></div>
+      </div>
+      <p class="dont">Avoid: <s>“AI that pays for itself”</s> · <s>“unlock the power of AI”</s> · <s>“revolutionise your business”</s> — infomercial register, wrong for this brand.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span class="mono">Brand Direction — Applied AI Firm</span>
+      <span class="mono">Finalists: Outturn · Redix &nbsp;|&nbsp; Next: pick &amp; lock domains</span>
+    </div>
+  </footer>
+
+</body>
+</html>
