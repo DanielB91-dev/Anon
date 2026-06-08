@@ -33,9 +33,20 @@ Anthropic / Cohere / Mistral route), which is also what the reference brands did
 
 | Name | Origin | Read |
 |------|--------|------|
-| **Outturn** | real word: "the quantity produced; the result" | grounded, operator, anti-hype; the safe anchor |
+| **Outturn** ✅ **CHOSEN** | real word: "the quantity produced; the result" | grounded, operator, anti-hype; ages best into a firm |
 | **Redix** | coined from Latin *reditus*, "return" (→ ROI) | sharp, technical, "AI-lab"; closest to the references |
 | **Avalent** *(outside option)* | Latin *valere*, "to be worth" | premium/abstract, but mild trademark risk (small semiconductor firm) |
+
+**Name decided: Outturn.** Domain reality: no active company on `outturn.com` / `outturn.ai`
+(the important part — no competing brand). `.com` may be registered as a parked
+commodities term; next step is a registrar/WHOIS check + formal trademark search.
+Grab **`outturn.ai`** now and chase the `.com`.
+
+### First surface
+
+`outturn-site.html` — a full landing page in the brand aesthetic: hero, four services
+(Map ROI → Build & ship → Embed & enable → Measure & prove), an outcomes/metrics strip
+(placeholder figures), a Diagnose→Build→Prove approach, a founder-led about, and contact.
 
 ## Visual system (v0.1)
 
